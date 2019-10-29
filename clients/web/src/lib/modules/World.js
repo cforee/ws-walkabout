@@ -1,6 +1,4 @@
 class WorldModule  {
-  constructor() {
-  }
 
 }
 

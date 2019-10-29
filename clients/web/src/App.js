@@ -4,13 +4,8 @@ import './App.css';
 import GameModule from './lib/modules/GameModule';
 
 const Game = new GameModule();
-Game.initialize();
 
 class App extends Component {
-  constructor(props){
-    super(props);
-  }
-
   _registerCommand(cmd) {
     Game.player.commands.register(cmd);
   }
@@ -20,6 +15,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    window.addEventListener('load', () => Game.initialize());
+    window.addEventListener('unload', () => Game.destroy());
   }
 
   render() {

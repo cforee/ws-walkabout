@@ -4,7 +4,7 @@
     "create": {
       "type": "registration",
       "opts": {
-        "registration": "destroy"
+        "registration": "create"
       }
     },
     "destroy": {

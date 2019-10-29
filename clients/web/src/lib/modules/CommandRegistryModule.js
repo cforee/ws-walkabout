@@ -4,16 +4,17 @@ import Commands from "../../config/commands.json";
 const WebsocketUrl = "ws://localhost:4000";
 
 class CommandRegistryModule  {
-  constructor(opts = { context: 'player' }) {
+  constructor(opts = { playerId: {} }) {
     this.socket = new ReconnectingWebSocket(WebsocketUrl);
-    this.context = opts.context;
+    this.playerId = opts.playerId;
     this.commandSet = Commands;
   }
 
   send(commandName, status=true) {
     console.log(commandName);
-    let cmd = this.commandSet[this.context][commandName];
+    let cmd = this.commandSet.player[commandName];
     if (cmd) {
+      cmd["playerId"] = this.playerId;
       cmd["status"] = status;
       this.socket.send(JSON.stringify(cmd));
     }

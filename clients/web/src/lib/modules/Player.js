@@ -3,15 +3,14 @@ import Helpers from '../Helpers';
 
 class PlayerModule  {
   constructor(opts) {
-    this.id = 'unregistered';
-    this.helpers = new Helpers();
+    this.id = new Helpers().generateHex(12);
     this.commands = new CommandRegistryModule({
-      context: 'player'
+      playerId: this.id
     });
+
   }
 
   create() {
-    this.id = this.helpers.generateHex(12);
     console.log(this.id);
     this.commands.send('create');
   }
