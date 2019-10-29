@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from "react";
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import GameModule from './lib/modules/GameModule';
+
+const Game = new GameModule();
+Game.initialize();
+
+class App extends Component {
+  constructor(props){
+    super(props);
+  }
+
+  _registerCommand(cmd) {
+    Game.player.commands.register(cmd);
+  }
+
+  _unregisterCommand(cmd) {
+    Game.player.commands.unregister(cmd);
+  }
+
+  componentDidMount() {
+  }
+
+  render() {
+    return  (
+      <div className="App">
+        <button
+          onMouseDown={ () => this._registerCommand('move/up') }
+          onMouseUp={ () => this._unregisterCommand('move/up') }>
+          UP
+        </button>
+        <button
+          onMouseDown={ () => this._registerCommand('move/right') }
+          onMouseUp={ () => this._unregisterCommand('move/right') }>
+          RIGHT
+        </button>
+        <button
+          onMouseDown={ () => this._registerCommand('move/down') }
+          onMouseUp={ () => this._unregisterCommand('move/down') }>
+          DOWN
+        </button>
+        <button
+          onMouseDown={ () => this._registerCommand('move/left') }
+          onMouseUp={ () => this._unregisterCommand('move/left') }>
+          LEFT
+        </button>
+        <div>{ this.props.last_cmd }</div>
+      </div>
+    );
+  }
 }
 
 export default App;

@@ -1,0 +1,41 @@
+{
+  "active": [],
+  "player": {
+    "create": {
+      "type": "registration",
+      "opts": {
+        "registration": "destroy"
+      }
+    },
+    "destroy": {
+      "type": "registration",
+      "opts": {
+        "registration": "destroy"
+      }
+    },
+    "move/up": {
+      "type": "move",
+      "opts": {
+        "move": "up"
+      }
+    },
+    "move/right": {
+      "type": "move",
+      "opts": {
+        "move": "right"
+      }
+    },
+    "move/down": {
+      "type": "move",
+      "opts": {
+        "move": "down"
+      }
+    },
+    "move/left": {
+      "type": "move",
+      "opts": {
+        "move": "left"
+      }
+    }
+  }
+}
