@@ -8,19 +8,48 @@ server.listen(PORT, function() { });
 let wsServer = new WebSocketServer({ httpServer: server });
 console.log("Dev WebSocket server running on port " + PORT);
 
-const COMMANDS = {
-  status: {
-    handler: null,
-    response: () => { return { data: { success: "cool" } } }
+let players = [];
 
+const COMMANDS = {
+  registration: {
+    handler: () => {
+      console.log("HANDLING REGISTRATION");
+      return true;
+    },
+    responses: {
+      success: (res) => { return { data: { success: "cool" } } },
+      failure: (res) => { return { data: { success: "nope" } } },
+    },
+  },
+  status: {
+    handler: () => {
+      console.log("GETTIN STATUS");
+      return true;
+    },
+    responses: {
+      success: (res) => { return { data: { success: "cool" } } },
+      failure: (res) => { return { data: { success: "nope" } } },
+    },
   },
   ping: {
-    handler: null,
-    response: () => { return { data: { success: "pong" } } }
+    handler: () => {
+      console.log("PINGING");
+      return true;
+    },
+    responses: {
+      success: (res) => { return { data: { success: "cool" } } },
+      failure: (res) => { return { data: { success: "nope" } } },
+    },
   },
   move: {
-    handler: null,
-    response: () => { return { data: { moving: true } } }
+    handler: () => {
+      console.log("MOVE")
+      return true;
+    },
+    responses: {
+      success: (res) => { return { data: { success: "cool" } } },
+      failure: (res) => { return { data: { success: "nope" } } },
+    },
   },
 
 }
@@ -34,18 +63,15 @@ wsServer.on('request', function(request) {
     if (message.type === 'utf8') {
       let req = JSON.parse(message.utf8Data);
       console.log(req);
-      switch (req.type) {
-        case 'move':
-          console.log("We gonna move");
-          break;
-        case 'registerPlayer':
-          console.log("We gonna register a player");
-          break;
-      }
-
-      if (COMMANDS[req.type]) {
-        let response = JSON.stringify(COMMANDS[req.type].response());
-        self.connection.sendUTF(response);
+      let cmd = COMMANDS[req.type];
+      if (cmd) {
+        if (cmd.handler) {
+          let result = cmd.handler(cmd.opts);
+          let res = result ? cmd.responses.success(result) :
+            cmd.responses.failure(result);
+          console.log(res);
+          self.connection.sendUTF(JSON.stringify(res))
+        }
       }
     }
   });
